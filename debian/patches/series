@@ -1,3 +1,5 @@
 0001-build-system.patch
 0002-lua-modules-paths.patch
 0003-extern_C.patch
+CVE-2021-45985.patch
+CVE-2022-33099.patch
