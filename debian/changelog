@@ -1,3 +1,38 @@
+lua5.4 (5.4.4-3+deb12u1) bookworm; urgency=medium
+
+  * Non-maintainer upload.
+  * debian/version-script: Export additional missing symbols for lua 5.4.4.
+    (Closes: #1034800)
+
+ -- Boyuan Yang <byang@debian.org>  Sun, 02 Jun 2024 10:34:23 -0400
+
+lua5.4 (5.4.4-3) unstable; urgency=medium
+
+  * Add a patch from upstream which fixes CVE-2022-33099, double free
+    in a situation when error occurs while handling an error
+    (closes: #1014935).
+
+ -- Sergei Golovan <sgolovan@debian.org>  Sun, 17 Jul 2022 14:56:01 +0300
+
+lua5.4 (5.4.4-2) unstable; urgency=medium
+
+  * Add a patch from upstream which fixes CVE-2022-28805, segmentation fault
+    due to a heap overflow when parsing ENV with <const> (closes: #1010265).
+
+ -- Sergei Golovan <sgolovan@debian.org>  Sat, 30 Apr 2022 07:38:29 +0300
+
+lua5.4 (5.4.4-1) unstable; urgency=medium
+
+  * New upstream release. This release fixes the following security bugs:
+    - CVE-2021-43519, stack overflow in lua_resume of ldo.c in Lua
+      Interpreter 5.1.0~5.4.4 allows attackers to perform a Denial of
+      Service via a crafted script file (closes: #1000228).
+    - CVE-2021-44647, Lua 5.4.4 and 5.4.2 are affected by SEGV by type
+      confusion in funcnamefromcode function in ldebug.c which can cause
+      a local denial of service (closes: #1004189).
+
+ -- Sergei Golovan <sgolovan@debian.org>  Mon, 07 Feb 2022 10:34:34 +0300
+
 lua5.4 (5.4.3-1) unstable; urgency=medium
 
   * New upstream release.
