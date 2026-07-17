@@ -1,0 +1,5 @@
+Tests: interpreter
+Depends: lua5.4
+
+Tests: liblua
+Depends: liblua5.4-dev, gcc, g++

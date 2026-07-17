@@ -1,0 +1,53 @@
+#!/bin/sh
+
+# This script is a smoke test for the basic functionality of the lua interpreter.
+
+set -e
+
+# Create a test lua file from a string of commands, run the lua interpreter on
+# it, then compare the printed output to a given string.
+#
+# $1 - A string of lua commands to run that will be placed in test.lua
+# $2 - The correct output that should be printed by the interpreter
+test_lua_program() {
+    rm -f test.lua
+    printf "%s" "$1" > test.lua
+    test_output=$(lua test.lua)
+
+    if [ "$test_output" != "$2" ]; then
+        echo "Error: expected output of $2 but received $test_output"
+        exit 1
+    fi
+}
+
+# Check basic math and order of operations.
+math_test="print(4 * (6 + 5) - 7)"
+math_test_output="37"
+test_lua_program "$math_test" "$math_test_output"
+
+# Check variable assignment and string concatination.
+var_test="x=10
+y = 5
+name = 'World!'
+print('Hello ' .. name .. ' - ' .. x .. y)
+print(x + y)"
+var_test_output="Hello World! - 105
+15"
+test_lua_program "$var_test" "$var_test_output"
+
+# Check recursion, function calls, loops, and branches.
+recursion_test="
+function print_dots(num)
+  for i=1,num do io.write('.') end
+  io.write('\n')
+  if num > 0 then print_dots(num - 1) end
+end
+print_dots(5)"
+recursion_test_output=".....
+....
+...
+..
+."
+test_lua_program "$recursion_test" "$recursion_test_output"
+
+rm -f test.lua

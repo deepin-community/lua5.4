@@ -8,7 +8,7 @@ Subject: lua modules paths
 
 --- a/src/luaconf.h
 +++ b/src/luaconf.h
-@@ -217,20 +217,28 @@
+@@ -223,20 +223,28 @@
  
  #else			/* }{ */
  

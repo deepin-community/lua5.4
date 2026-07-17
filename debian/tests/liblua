@@ -1,0 +1,79 @@
+#!/bin/sh
+
+# This is a smoke test for the basic functionality of the lua C api.
+
+set -e
+
+rm -f libluatest.c testscript.lua libluatest
+
+# Create a c file that runs a lua file directly, then extracts a function and
+# runs it on its own with a custom argument input.
+cat <<EOF > libluatest.c
+#include <lua.h>
+#include <lauxlib.h>
+#include <lualib.h>
+
+int main() {
+  lua_State *L = luaL_newstate();
+  luaL_openlibs(L);
+
+  luaL_loadfile(L, "testscript.lua");
+
+  // Run file directly - 3 dot sets
+  lua_pcall(L, 0, LUA_MULTRET, 0);
+
+  // Run function directly - 4 dot sets
+  lua_getglobal(L, "print_dots");
+  lua_pushnumber(L, 4);
+  lua_call(L, 1, 0);
+
+  lua_close(L);
+  return 0;
+}
+EOF
+
+# Create a lua file with a recursive function that prints a triangle of dots
+# with an argument for the initial number of dots to print.
+cat <<EOF > testscript.lua
+function print_dots(num)
+  for i=1,num do io.write('.') end
+  io.write('\n')
+  if num > 0 then print_dots(num - 1) end
+end
+
+print_dots(3)
+EOF
+
+do_test()
+{
+	# Compile with lua api includes.
+	rm -f libluatest
+	$1 -Wall -Werror -o libluatest libluatest.c -l$2 -I/usr/include/lua5.4
+
+	# Run the c file then test the printed output. It should first print a
+	# triangle starting with 3 dots since print_dots(3) is in the lua file.
+	# Then it should print a triangle starting with 4 dots since 4 is pushed
+	# onto the stack when the function is called directly by the c file.
+	test_output=$(./libluatest)
+	correct_output="...
+..
+.
+
+....
+...
+..
+."
+
+	if [ "$test_output" != "$correct_output" ]; then
+	        echo "Error: expected:
+$correct_output
+received:
+$test_output"
+	        exit 1
+	    fi
+}
+
+do_test gcc lua5.4
+do_test g++ lua5.4-c++
+
+rm -f libluatest.c testscript.lua libluatest

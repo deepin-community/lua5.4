@@ -3,11 +3,12 @@ Section: interpreters
 Priority: optional
 Maintainer: Debian Lua Team <pkg-lua-devel@lists.alioth.debian.org>
 Uploaders: Sergei Golovan <sgolovan@debian.org>
-Build-Depends: debhelper (>= 12), quilt (>= 0.40), libtool, libreadline-dev, autoconf
-Standards-Version: 4.5.0
+Build-Depends: debhelper-compat (= 13), libreadline-dev
+Standards-Version: 4.7.0
 Vcs-Git: https://salsa.debian.org/lua-team/lua5.4.git
 Vcs-Browser: https://salsa.debian.org/lua-team/lua5.4
 Homepage: http://www.lua.org
+Rules-Requires-Root: no
 
 Package: lua5.4
 Architecture: any
@@ -28,7 +29,7 @@ Package: liblua5.4-dev
 Architecture: any
 Multi-Arch: same
 Depends: liblua5.4-0 (= ${binary:Version}), libc6-dev|libc-dev, libreadline-dev, ${misc:Depends}
-Recommends: pkg-config, libtool-bin
+Recommends: pkgconf, libtool-bin
 Section: libdevel
 Description: Development files for the Lua language version 5.4
  Lua is a powerful, light-weight programming language designed for extending
@@ -58,13 +59,3 @@ Description: Shared library for the Lua interpreter version 5.4
  .
  This package contains runtime libraries.  You shouldn't need to install it
  explicitly.
-
-Package: liblua5.4-0-dbg
-Architecture: any
-Multi-Arch: same
-Depends: ${shlibs:Depends}, liblua5.4-0 (= ${binary:Version}), ${misc:Depends}
-Section: debug
-Priority: optional
-Description: Debug symbols for the Lua shared library interpreter
- This package contains the debugging symbols for liblua5.4 and lua5.4
-
