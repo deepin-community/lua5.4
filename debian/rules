@@ -85,10 +85,13 @@ override_dh_auto_install:
 
 override_dh_auto_clean:
 	dh_auto_clean
+	rm -rf src/.libs
+	rm -f src/*-c++.o
+	rm -f src/*.lo
 	rm -f doc/lua5.4.1 doc/luac5.4.1
 	rm -f src/$(LUA_MULTIARCH)
 	rm -f debian/liblua5.4-dev.postinst debian/liblua5.4-dev.prerm
 	rm -Rf debian/libtool
 
 override_dh_strip:
-	dh_strip --dbg-package=$(LIB_PACKAGE_NAME)-dbg
+	dh_strip --dbgsym-migration='liblua5.4-0-dbg (<< 5.4.6-2~)'

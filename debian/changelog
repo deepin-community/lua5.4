@@ -1,10 +1,73 @@
-lua5.4 (5.4.4-3+deb12u1) bookworm; urgency=medium
+lua5.4 (5.4.7-1) unstable; urgency=medium
 
-  * Non-maintainer upload.
-  * debian/version-script: Export additional missing symbols for lua 5.4.4.
-    (Closes: #1034800)
+  * New upstream release.
+  * Bump the standards version to 4.7.0.
 
- -- Boyuan Yang <byang@debian.org>  Sun, 02 Jun 2024 10:34:23 -0400
+ -- Sergei Golovan <sgolovan@debian.org>  Thu, 28 Nov 2024 12:14:18 +0300
+
+lua5.4 (5.4.6-3) unstable; urgency=high
+
+  [ P. J. McDermott ]
+  * Fix completely broken C++ library missing all "lua*" function symbols.
+    0003-extern_C.patch was removed in 5.4.6-1 per request in #1032533,
+    replacing all the C symbols with C++ mangled names, but the export map
+    debian/version-script listed only C symbols. (closes: #1063707)
+    - Extend DEP-8 test to check C++ library.
+  * Update liblua5.4-dev Recommends from pkg-config to pkgconf.
+    (Fixes lintian error tag depends-on-obsolete-package)
+  * Add Rules-Requires-Root: no.
+    (Fixes lintian pedantic tag silent-on-rules-requiring-root)
+  * Move "-e" from "#!" line to "set" command in lua5.4 prerm script.
+    (Fixes lintian pedantic tag maintainer-script-without-set-e)
+  * Add debian/salsa-ci.yml.
+
+ -- Debian Lua Team <pkg-lua-devel@lists.alioth.debian.org>  Sun, 11 Feb 2024 07:29:32 -0500
+
+lua5.4 (5.4.6-2) unstable; urgency=medium
+
+  * Team upload
+
+  [ Lena Voytek ]
+  * Make some packaging improvements (closes: #1056991)
+    - Add DEP-8 tests for basic functionality
+      + d/t/interpreter: Test lua interpreter
+      + d/t/liblua: Test lua C api
+    - d/p/0001-build-system.patch: Use default test environment:
+      Instead of overriding testing with libtool which now fails with -dlopen
+      argument, the original ./$(LUA_T) -v is used as it is works correctly
+      with 5.4.6
+    - d/configure.ac: Remove AC_PROG_LIBTOOL entry:
+      AC_PROG_LIBTOOL is a deprecated macro for initializing libtool. LT_INIT
+      already covers this functionality so no other action is required.
+    - d/liblua5.4-0.symbols: Add symbols file for lua 5.4 libraries
+
+  [ Gianfranco Costamagna ]
+  * d/version-script: Export additional missing symbols (closes: #1034800)
+  * Update watch file to version 4
+  * Fix some copyright typos
+  * Drop trailing spaces and newlines
+  * Add R^3: no
+  * Use https for copyright machine readable file
+  * Explicit set -e on prerm and postinst files to please lintian
+  * Drop priority field on dbg to please lintian
+  * Drop unused patch to please lintian
+  * Drop dbg package to please lintian (closes: #1050990)
+  * Drop quilt and auto* dependencies, already satisfied by newer debhelper
+    and compat level 13
+
+ -- Lena Voytek <lena.voytek@canonical.com>  Mon, 27 Nov 2023 08:23:09 -0700
+
+lua5.4 (5.4.6-1) unstable; urgency=medium
+
+  * New upstream release (closes: #1041902).
+  * Remove no longer necessary patches which fixed CVE-2022-28805 and
+    CVE-2022-33099 in version 5.4.4.
+  * Refresh patches.
+  * Fix building the package twice (closes: #1046480).
+  * Bump the debhelper compatibility level to 13.
+  * Bump the standards version to 4.6.2.
+
+ -- Sergei Golovan <sgolovan@debian.org>  Wed, 14 Jun 2023 15:52:06 +0300
 
 lua5.4 (5.4.4-3) unstable; urgency=medium
 
